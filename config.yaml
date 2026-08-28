@@ -1,6 +1,6 @@
 name: "LoRaWAN Add-on"
 description: "A complete LoRaWAN Network Server with Chirpstack"
-version: "0.0.4"
+version: "0.0.3"
 slug: "lorawan"
 image: "halorawan/{arch}-addon-lorawan"
 url: "https://github.com/karmao1979/addon-lorawan"
