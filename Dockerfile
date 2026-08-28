@@ -30,8 +30,8 @@ RUN apt-get install -y gcc make
 RUN apt-get install -y python3-pip
 
 RUN pip3 install --no-cache-dir \
-    "protobuf==7.35.0" \
-    chirpstack-api \
+    "protobuf==6.33.6" \
+    "chirpstack-api==4.17.0" \
     grpcio \
     json5
 
