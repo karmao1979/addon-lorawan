@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     vim \
     iproute2 \
     screen
-    
+
 # Postgres Files
 COPY pg_hba.conf /etc/postgresql/13/main
 COPY pg_setup.sql /
@@ -28,8 +28,9 @@ RUN apt-get install -y gcc make
 
 # Python packages
 RUN apt-get install -y python3-pip
-RUN pip3 install --upgrade \
-    "protobuf>=7.35.0" \
+
+RUN pip3 install --no-cache-dir \
+    "protobuf==7.35.0" \
     chirpstack-api \
     grpcio \
     json5
@@ -38,13 +39,15 @@ RUN pip3 install --upgrade \
 RUN apt-get install -y chirpstack-gateway-bridge
 COPY chirpstack-gateway-bridge.toml /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
 
-# Install Chirpstack 
+# Install Chirpstack
 RUN apt-get install -y chirpstack
 
-RUN mkdir /var/run/chirpstack
+RUN mkdir -p /var/run/chirpstack
 RUN chown chirpstack:chirpstack /var/run/chirpstack
-RUN mkdir /var/log/chirpstack
+
+RUN mkdir -p /var/log/chirpstack
 RUN chown -R chirpstack:chirpstack /var/log/chirpstack
+
 COPY chirpstack /etc/init.d/chirpstack
 RUN chmod +x /etc/init.d/chirpstack
 
@@ -52,25 +55,31 @@ RUN chmod +x /etc/init.d/chirpstack
 COPY create-chirpstack-api-key.sh /
 RUN chmod +x /create-chirpstack-api-key.sh
 
-RUN mkdir /etc/lora
+# LoRa packet forwarder
+RUN mkdir -p /etc/lora
 COPY sx1302_hal /etc/lora/sx1302_hal
 RUN cd /etc/lora/sx1302_hal && make
 
-RUN mkdir /var/run/mosquitto
+RUN mkdir -p /var/run/mosquitto
 RUN chown -R mosquitto /var/run/mosquitto
+
 COPY mosquitto.conf /etc/mosquitto/
 COPY default.conf /etc/mosquitto/conf.d
 
 # lora_pkt_fwd
-# Create lora_pkt_fwd user
 RUN useradd -r -s /bin/false lora-pkt-fwd
-RUN mkdir /var/run/lora-pkt-fwd
+
+RUN mkdir -p /var/run/lora-pkt-fwd
 RUN chown lora-pkt-fwd /var/run/lora-pkt-fwd
-RUN mkdir /var/log/lora-pkt-fwd
+
+RUN mkdir -p /var/log/lora-pkt-fwd
 RUN chown lora-pkt-fwd /var/log/lora-pkt-fwd
+
 RUN chown -R lora-pkt-fwd /etc/lora/sx1302_hal/packet_forwarder
+
 COPY lora-pkt-fwd /etc/init.d/lora-pkt-fwd
 RUN chmod +x /etc/init.d/lora-pkt-fwd
+
 COPY global_conf.json /etc/lora/sx1302_hal/packet_forwarder/global_conf.json
 
 # Copy add gateway script
