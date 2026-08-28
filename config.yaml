@@ -1,9 +1,9 @@
 name: "LoRaWAN Add-on"
 description: "A complete LoRaWAN Network Server with Chirpstack"
-version: "0.0.3"
+version: "0.0.4"
 slug: "lorawan"
 image: "halorawan/{arch}-addon-lorawan"
-url: "https://github.com/ha-lorawan/addon-lorawan"
+url: "https://github.com/karmao1979/addon-lorawan"
 init: false
 arch:
   - aarch64
@@ -12,6 +12,7 @@ arch:
 startup: services
 ports:
   8080/tcp: 8080
+  1700/udp: 1700
 devices: 
   - /dev/ttyACM0
 udev: true
