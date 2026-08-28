@@ -28,7 +28,11 @@ RUN apt-get install -y gcc make
 
 # Python packages
 RUN apt-get install -y python3-pip
-RUN pip3 install chirpstack-api grpcio json5
+RUN pip3 install --upgrade \
+    "protobuf>=7.35.0" \
+    chirpstack-api \
+    grpcio \
+    json5
 
 # Install Chirpstack Gateway Bridge
 RUN apt-get install -y chirpstack-gateway-bridge
