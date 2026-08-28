@@ -109,7 +109,7 @@ LONGITUDE=$(bashio::config 'longitude')
 ALTITUDE=$(bashio::config 'altitude')
 
 # add gateway to chirpstack
-python3 add-gateway.py --latitude $LATITUDE --longitude $LONGITUDE --altitude $ALTITUDE
+python3 add-gateway.py --latitude $LATITUDE --longitude $LONGITUDE --altitude $ALTITUDE || true
 
 # keep the container running
 while true; do
